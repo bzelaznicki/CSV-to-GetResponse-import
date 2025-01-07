@@ -1,32 +1,90 @@
 FIELD_MAPPINGS = {
+    "email": "email",
     "e-mail": "email",
+    "e_mail": "email",
     "email address": "email",
-    "e-mail address": "email",  
+    "email_address": "email",
+    "e-mail address": "email",
+    "e-mail_address": "email",
+    "e_mail_address": "email",
+    "adres email": "email",
+    "correo electronico": "email",
+    "correo": "email",
+
+    # Name fields
     "first name": "first_name",
     "last name": "last_name",
-    "street address": "street",
-    "zip code": "postal_code",
-    "zip": "postal_code",
-    "mobile": "mobile_phone",
-    "cell": "mobile_phone",
-    "adres email": "email",
     "imie": "first_name",
     "nazwisko": "last_name",
+    "vorname": "first_name",
+    "nachname": "last_name",
+    "prenom": "first_name",
+    "nom": "last_name",
+    "nombre": "first_name",
+    "apellido": "last_name",
+
+    # Address fields
+    "street": "street",
+    "street address": "street",
     "ulica": "street",
+    "strasse": "street",
+    "rue": "street",
+    "calle": "street",
     "miasto": "city",
+    "city": "city",
+    "kraj": "country",
+    "country": "country",
+
+    # Postal code
+    "postal code": "postal_code",
+    "zip code": "postal_code",
+    "zip": "postal_code",
     "kod pocztowy": "postal_code",
     "kod": "postal_code",
-    "telefon komorkowy": "mobile_phone",
+    "postleitzahl": "postal_code",
+    "code postal": "postal_code",
+    "codigo postal": "postal_code",
+
+    # Phone numbers
+    "phone": "phone",
+    "phone number": "phone",
     "telefon": "phone",
-    "telefon stacjonarny": "home_phone",
-    "faks": "fax",
-    "firma": "company",
-    "komentarz": "comment",
+    "telephone": "phone",
+    "mobile": "mobile_phone",
+    "cell": "mobile_phone",
+    "telefon komorkowy": "mobile_phone",
+    "telefon_komorkowy": "mobile_phone",
     "komórka": "mobile_phone",
+    "mobile phone": "mobile_phone",
+    "cellphone": "mobile_phone",
+    "handy": "mobile_phone",  # German
+    "portable": "mobile_phone",  # French
+    "movil": "mobile_phone",  # Spanish
+
+    # Other phone types
+    "telefon stacjonarny": "home_phone",
+    "telefon sluzbowy": "work_phone",
+    "home phone": "home_phone",
+    "work phone": "work_phone",
+    "faks": "fax",
+    "fax": "fax",
+
+    # Company/Organization
+    "firma": "company",
+    "company": "company",
+    "entreprise": "company",
+    "empresa": "company",
+    "unternehmen": "company",
+
+    # Other fields
+    "komentarz": "comment",
+    "comment": "comment",
     "data urodzenia": "birthdate",
     "data urodzin": "birthdate",
-    "telefon sluzbowy": "work_phone",
-    "kraj": "country"
+    "birth date": "birthdate",
+    "fecha de nacimiento": "birthdate",
+    "date de naissance": "birthdate",
+    "geburtsdatum": "birthdate"
 }
 NON_NFKD_MAP = {
     u'\u0181': u'B', u'\u1d81': u'd', u'\u1d85': u'l', u'\u1d89': u'r', u'\u028b': u'v', u'\u1d8d': u'x', 
