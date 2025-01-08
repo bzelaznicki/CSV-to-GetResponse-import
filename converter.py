@@ -3,6 +3,7 @@ import re
 import csv
 from constants import *
 from io import StringIO
+import os
 
 def get_and_convert_headers(raw_headers):
     if not raw_headers:
@@ -33,17 +34,19 @@ def remove_accents(text):
 
 def convert_header(header):
     
-    converted = remove_accents(header) #removes accents
+    converted = remove_accents(header)
 
-    converted = converted.lower() #converts to lowercase
-    if converted in FIELD_MAPPINGS: #checks if the header is in the FIELD_MAPPINGS dictionary
-        converted = FIELD_MAPPINGS[converted]    
-    converted = re.sub(r'[^a-z0-9_\s]', '_', converted) #removes all non-alphanumeric characters except spaces and underscore
+    converted = converted.lower()
     
-    converted = converted.replace(' ', '_') #replaces spaces with underscores
-    converted = converted.strip('_')#removes leading and trailing underscores
-    converted = re.sub(r'_+', '_', converted) #replaces multiple underscores with a single underscore
-
+    if converted in FIELD_MAPPINGS:
+        converted = FIELD_MAPPINGS[converted]
+    
+    converted = re.sub(r'[^a-z0-9_\s]', '_', converted)
+    
+    converted = converted.replace(' ', '_')
+    converted = converted.strip('_')
+    converted = re.sub(r'_+', '_', converted)
+    
     return converted
 
 def convert_tag(tag):
@@ -64,11 +67,8 @@ def is_tags_column(header):
 
 
 def process_row(headers, row):
-    #print(f"Processing row: {row}")
     processed_row = {}
     for header, value in zip(headers, row):
-        #print(f"Header: {header}, Value: {value}")
-        # ... rest of your code
         if is_tags_column(header):
             processed_row[header] = process_tags(value)
         else:
@@ -107,17 +107,67 @@ def process_csv_data(csv_data):
 
     return processed_data
 
-def data_to_csv(data):
-    if not data:
-        return ''
-    
-    header = list(data[0].keys())
-
 def get_unique_tags(row_tags):
     tags = set()
-    for tag in row_tags:
-        cleaned_tag = process_tags(tag)
-        tags.add(cleaned_tag)
+    for tag_list in row_tags:  
+        for tag in tag_list:   
+            cleaned_tag = convert_tag(tag)
+            if cleaned_tag:
+                tags.add(cleaned_tag)
+    return sorted(tags)
+
+def convert_csv(input_data):
+    processed_csv = process_csv_data(input_data)
     
-    tags = sorted(tags)
-    return list(tags)
+    # Get all headers except 'tags'
+    base_headers = [h for h in processed_csv[0].keys() if h != 'tags']
+    
+    unique_tags = get_unique_tags(row['tags'] for row in processed_csv)
+    tag_headers = [f'tag:{tag}' for tag in unique_tags]
+    
+    # Combine headers (without 'tags')
+    headers = base_headers + tag_headers
+    
+    # Generate rows
+    rows = []
+    for row in processed_csv:
+        # Start with all base columns except tags
+        new_row = [row[header] for header in base_headers]
+        
+        # Add tag columns (1's and 0's)
+        row_tags = [convert_tag(tag) for tag in row['tags']]
+        
+        for tag in unique_tags:
+            new_row.append('1' if tag in row_tags else '0')
+        
+        rows.append(new_row)
+    
+    return headers, rows    
+
+def get_output_filename(input_filename):
+    # Split the filename and extension
+    base, ext = os.path.splitext(input_filename)
+    return f"{base}_converted{ext}"
+
+def read_csv(input_filepath):
+    with open(input_filepath, 'r') as csvfile:
+        # Read entire file as a string
+        return csvfile.read()
+    
+def write_csv(headers, rows, input_filepath):
+    # Get the directory of the input file
+    input_dir = os.path.dirname(input_filepath)
+    input_filename = os.path.basename(input_filepath)
+    
+    # Create output filename
+    base, ext = os.path.splitext(input_filename)
+    output_filename = f"{base}_converted{ext}"
+    
+    # Combine directory with new filename
+    output_filepath = os.path.join(input_dir, output_filename)
+    
+    with open(output_filepath, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(headers)
+        writer.writerows(rows)
+    return output_filepath

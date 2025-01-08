@@ -3,6 +3,7 @@ from converter import *
 import unittest
 
 class TestConvertHeader(unittest.TestCase):
+    
     def test_minimal_headers(self):
         # Test with just a few essential columns
         csv_data = '''email,first_name,tags
@@ -229,6 +230,22 @@ class TestConvertHeader(unittest.TestCase):
             result = convert_tag(input_tag)
             self.assertEqual(result, expected)
             self.assertLessEqual(len(result), 64)
-                                 
+
+    def test_convert_csv(self):
+        input_data = """Email,Tags,Name,Country
+    email@test.com,"Python, Coding",John,US
+    other@test.com,"python, Gaming",Jane,UK
+    third@test.com,CODING,Bob,CA"""
+        
+        expected_headers = ["email", "name", "country", "tag:coding", "tag:gaming", "tag:python"]
+        expected_rows = [
+            ["email@test.com", "John", "US", "1", "0", "1"],
+            ["other@test.com", "Jane", "UK", "0", "1", "1"],
+            ["third@test.com", "Bob", "CA", "1", "0", "0"]
+        ]
+        
+        result_headers, result_rows = convert_csv(input_data)
+        self.assertEqual(result_headers, expected_headers)
+        self.assertEqual(result_rows, expected_rows)          
 if __name__ == '__main__':
     unittest.main()

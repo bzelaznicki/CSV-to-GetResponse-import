@@ -1,18 +1,32 @@
 from constants import *
 from converter import *
+import argparse
+import sys
 
-
-csv_data = """E-mail,Name,Street Address,Telefon Komórkowy,Telefon służbowy,City,Country,Tags
-user@example.com,John Doe,Sample Street 123,Gotham,UK,Metropolis,United Kingdom,"attended_event,promo2024,high_value"
-user2@example.com,Jane Doe,Sample Street 123,Gotham,UK,Gotham,United Kingdom,"attended_event,high_value"
-"""
-
-
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Convert CSV file with tags to expanded format')
+    parser.add_argument('input_file', help='Path to the input CSV file')
+    return parser.parse_args()
 
 def main():
-    file_data = process_csv_data(csv_data)
-    print(file_data)
-
+    args = parse_arguments()
+    try:
+        # Read the input CSV
+        input_data = read_csv(args.input_file)
+        
+        # Convert the data
+        headers, rows = convert_csv(input_data)
+        
+        # Write the converted data
+        output_filepath = write_csv(headers, rows, args.input_file)
+        print(f"Converted file saved to: {output_filepath}")
+        
+    except FileNotFoundError:
+        print(f"Error: Could not find file '{args.input_file}'")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
