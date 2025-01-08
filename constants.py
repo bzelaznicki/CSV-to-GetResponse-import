@@ -1,6 +1,7 @@
 TAGS_COLUMN = "tags"
 
 FIELD_MAPPINGS = {
+    # Email fields
     "email": "email",
     "e-mail": "email",
     "e_mail": "email",
@@ -9,135 +10,130 @@ FIELD_MAPPINGS = {
     "e-mail address": "email",
     "e-mail_address": "email",
     "e_mail_address": "email",
-    "adres email": "email",
-    "correo electronico": "email",
-    "correo": "email",
+    "adres email": "email",  # Polish
+    "correo electronico": "email",  # Spanish
+    "correo": "email",  # Spanish
+    "indirizzo email": "email",  # Italian
+    "posta elettronica": "email",  # Italian
 
     # Name fields
     "first name": "first_name",
     "last name": "last_name",
-    "imie": "first_name",
-    "nazwisko": "last_name",
-    "vorname": "first_name",
-    "nachname": "last_name",
-    "prenom": "first_name",
-    "nom": "last_name",
-    "nombre": "first_name",
-    "apellido": "last_name",
+    "imie": "first_name",  # Polish
+    "nazwisko": "last_name",  # Polish
+    "vorname": "first_name",  # German
+    "nachname": "last_name",  # German
+    "prenom": "first_name",  # French
+    "nom": "last_name",  # French
+    "nombre": "first_name",  # Spanish
+    "apellido": "last_name",  # Spanish
+    "nome": "first_name",  # Italian
+    "cognome": "last_name",  # Italian
+
+    # Full name fields
+    "full name": "name",
+    "fullname": "name",
+    "name": "name",
+    "nombre completo": "name",  # Spanish
+    "nom complet": "name",  # French
+    "vollständiger name": "name",  # German
+    "nome completo": "name",  # Italian
 
     # Address fields
     "street": "street",
     "street address": "street",
-    "ulica": "street",
-    "strasse": "street",
-    "rue": "street",
-    "calle": "street",
-    "miasto": "city",
+    "ulica": "street",  # Polish
+    "strasse": "street",  # German
+    "rue": "street",  # French
+    "calle": "street",  # Spanish
+    "miasto": "city",  # Polish
     "city": "city",
-    "kraj": "country",
+    "kraj": "country",  # Polish
     "country": "country",
+    "via": "street",  # Italian
+    "indirizzo": "street",  # Italian
+    "città": "city",  # Italian
+    "citta": "city",  # Italian
+    "paese": "country",  # Italian
+    "stato": "country",  # Italian
 
     # Postal code
     "postal code": "postal_code",
     "zip code": "postal_code",
     "zip": "postal_code",
-    "kod pocztowy": "postal_code",
-    "kod": "postal_code",
-    "postleitzahl": "postal_code",
-    "code postal": "postal_code",
-    "codigo postal": "postal_code",
+    "kod pocztowy": "postal_code",  # Polish
+    "kod": "postal_code",  # Polish
+    "postleitzahl": "postal_code",  # German
+    "code postal": "postal_code",  # French
+    "codigo postal": "postal_code",  # Spanish
+    "codice postale": "postal_code",  # Italian
+    "cap": "postal_code",  # Italian
 
     # Phone numbers
     "phone": "phone",
     "phone number": "phone",
-    "telefon": "phone",
-    "telephone": "phone",
+    "telefon": "phone",  # Polish
+    "telephone": "phone",  # French
     "mobile": "mobile_phone",
     "cell": "mobile_phone",
-    "telefon komorkowy": "mobile_phone",
-    "telefon_komorkowy": "mobile_phone",
-    "komórka": "mobile_phone",
+    "telefon komorkowy": "mobile_phone",  # Polish
+    "telefon_komorkowy": "mobile_phone",  # Polish
+    "komórka": "mobile_phone",  # Polish
     "mobile phone": "mobile_phone",
     "cellphone": "mobile_phone",
     "handy": "mobile_phone",  # German
     "portable": "mobile_phone",  # French
     "movil": "mobile_phone",  # Spanish
+    "telefono": "phone",  # Italian
+    "numero di telefono": "phone",  # Italian
+    "cellulare": "mobile_phone",  # Italian
+    "tel": "phone",  # Italian
+    "tel. casa": "home_phone",  # Italian
+    "tel. ufficio": "work_phone",  # Italian
 
     # Other phone types
-    "telefon stacjonarny": "home_phone",
-    "telefon sluzbowy": "work_phone",
+    "telefon stacjonarny": "home_phone",  # Polish
+    "telefon sluzbowy": "work_phone",  # Polish
     "home phone": "home_phone",
     "work phone": "work_phone",
-    "faks": "fax",
+    "faks": "fax",  # Polish
     "fax": "fax",
 
     # Company/Organization
-    "firma": "company",
+    "firma": "company",  # Polish
     "company": "company",
-    "entreprise": "company",
-    "empresa": "company",
-    "unternehmen": "company",
+    "entreprise": "company",  # French
+    "empresa": "company",  # Spanish
+    "unternehmen": "company",  # German
+    "azienda": "company",  # Italian
+    "società": "company",  # Italian
+    "societa": "company",  # Italian
 
-    #Tags
+    # Tags
     "tags": TAGS_COLUMN,
     "tag": TAGS_COLUMN,
     "tagi": TAGS_COLUMN,  # Polish
     "etykiety": TAGS_COLUMN,  # Polish
     "labels": TAGS_COLUMN,
     "categories": TAGS_COLUMN,
+    "etichette": TAGS_COLUMN,  # Italian
+    "categorie": TAGS_COLUMN,  # Italian
 
     # Other fields
-    "komentarz": "comment",
+    "komentarz": "comment",  # Polish
     "comment": "comment",
-    "data urodzenia": "birthdate",
-    "data urodzin": "birthdate",
+    "data urodzenia": "birthdate",  # Polish
+    "data urodzin": "birthdate",  # Polish
     "birth date": "birthdate",
-    "fecha de nacimiento": "birthdate",
-    "date de naissance": "birthdate",
-    "geburtsdatum": "birthdate",
-        # Email in Italian
-    "indirizzo email": "email",
-    "posta elettronica": "email",
-
-    # Name fields in Italian
-    "nome": "first_name",
-    "cognome": "last_name",
-
-    # Address fields in Italian
-    "via": "street",
-    "indirizzo": "street",
-    "città": "city",
-    "citta": "city",
-    "paese": "country",
-    "stato": "country",
-
-    # Postal code in Italian
-    "codice postale": "postal_code",
-    "cap": "postal_code",
-
-    # Phone numbers in Italian
-    "telefono": "phone",
-    "numero di telefono": "phone",
-    "cellulare": "mobile_phone",
-    "tel": "phone",
-    "tel. casa": "home_phone",
-    "tel. ufficio": "work_phone",
-
-    # Company in Italian
-    "azienda": "company",
-    "società": "company",
-    "societa": "company",
-
-    # Tags in Italian
-    "etichette": TAGS_COLUMN,
-    "categorie": TAGS_COLUMN,
-
-    # Other fields in Italian
-    "commento": "comment",
-    "data di nascita": "birthdate",
-    "data nascita": "birthdate",
-    "nascita": "birthdate"
+    "fecha de nacimiento": "birthdate",  # Spanish
+    "date de naissance": "birthdate",  # French
+    "geburtsdatum": "birthdate",  # German
+    "commento": "comment",  # Italian
+    "data di nascita": "birthdate",  # Italian
+    "data nascita": "birthdate",  # Italian
+    "nascita": "birthdate"  # Italian
 }
+
 NON_NFKD_MAP = {
     u'\u0181': u'B', u'\u1d81': u'd', u'\u1d85': u'l', u'\u1d89': u'r', u'\u028b': u'v', u'\u1d8d': u'x', 
     u'\u1d83': u'g', u'\u0191': u'F', u'\u0199': u'k', u'\u019d': u'N', u'\u0220': u'N', u'\u01a5': u'p', 
@@ -158,14 +154,8 @@ NON_NFKD_MAP = {
     u'\u0110': u'D', u'\u0193': u'G', u'\u1d82': u'f', u'\u0197': u'I', u'\u029d': u'j', u'\u019f': u'O', 
     u'\u2c6c': u'z', u'\u01ab': u't', u'\u01b3': u'Y', u'\u0236': u't', u'\u023a': u'A', u'\u023e': u'T', 
     u'\ua740': u'K', u'\u1d8a': u's', u'\ua744': u'K', u'\u0246': u'E', u'\ua748': u'L', u'\ua74c': u'O', 
-    u'\u024e': u'Y', u'\ua750': u'P', u'\ua754': u'P', u'\u0256': u'd', u'\ua758': u'Q', u'\u2c62': u'L', 
-    u'\u0266': u'h', u'\u2c73': u'w', u'\u2c6a': u'k', u'\u1d6c': u'b', u'\u2c6e': u'M', u'\u1d70': u'n', 
-    u'\u0272': u'n', u'\u1d92': u'e', u'\u1d74': u's', u'\u2c7a': u'o', u'\u2c6b': u'Z', u'\u027e': u'r', 
-    u'\u0180': u'b', u'\u0282': u's', u'\u1d84': u'k', u'\u0188': u'c', u'\u018c': u'd', u'\ua742': u'K', 
-    u'\u1d99': u'u', u'\u0198': u'K', u'\u1d8c': u'v', u'\u0221': u'd', u'\u2c71': u'v', u'\u0225': u'z', 
-    u'\u01a4': u'P', u'\u0127': u'h', u'\u01ac': u'T', u'\u0235': u'n', u'\u01b4': u'y', u'\u2c72': u'W', 
-    u'\u023d': u'L', u'\ua743': u'k', u'\u0249': u'j', u'\ua74b': u'o', u'\u024d': u'r', u'\ua753': u'p', 
-    u'\u0255': u'c', u'\ua757': u'q', u'\u2c68': u'h', u'\ua75b': u'r', u'\ua75f': u'v', u'\u2c61': u'l', 
-    u'\u2c65': u'a', u'\u01e4': u'G', u'\u0167': u't', u'\u2c69': u'K', u'\u026d': u'l', u'\u1d6f': u'm', 
-    u'\u0271': u'm', u'\u1d73': u'r', u'\u027d': u'r', u'\u1efe': u'Y'
+    u'\u024e': u'Y', u'\ua750': u'P', u'\ua754': u'P', u'\u0256': u'd', u'\ua758': u'Q', u'\u2c68': u'h', 
+    u'\ua75b': u'r', u'\ua75f': u'v', u'\u2c61': u'l', u'\u2c65': u'a', u'\u01e4': u'G', u'\u0167': u't', 
+    u'\u2c69': u'K', u'\u026d': u'l', u'\u1d6f': u'm', u'\u0271': u'm', u'\u1d73': u'r', u'\u027d': u'r', 
+    u'\u1efe': u'Y'
 }
