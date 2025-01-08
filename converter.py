@@ -112,3 +112,12 @@ def data_to_csv(data):
         return ''
     
     header = list(data[0].keys())
+
+def get_unique_tags(row_tags):
+    tags = set()
+    for tag in row_tags:
+        cleaned_tag = process_tags(tag)
+        tags.add(cleaned_tag)
+    
+    tags = sorted(tags)
+    return list(tags)
