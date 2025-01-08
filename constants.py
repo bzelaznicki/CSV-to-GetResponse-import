@@ -94,7 +94,49 @@ FIELD_MAPPINGS = {
     "birth date": "birthdate",
     "fecha de nacimiento": "birthdate",
     "date de naissance": "birthdate",
-    "geburtsdatum": "birthdate"
+    "geburtsdatum": "birthdate",
+        # Email in Italian
+    "indirizzo email": "email",
+    "posta elettronica": "email",
+
+    # Name fields in Italian
+    "nome": "first_name",
+    "cognome": "last_name",
+
+    # Address fields in Italian
+    "via": "street",
+    "indirizzo": "street",
+    "città": "city",
+    "citta": "city",
+    "paese": "country",
+    "stato": "country",
+
+    # Postal code in Italian
+    "codice postale": "postal_code",
+    "cap": "postal_code",
+
+    # Phone numbers in Italian
+    "telefono": "phone",
+    "numero di telefono": "phone",
+    "cellulare": "mobile_phone",
+    "tel": "phone",
+    "tel. casa": "home_phone",
+    "tel. ufficio": "work_phone",
+
+    # Company in Italian
+    "azienda": "company",
+    "società": "company",
+    "societa": "company",
+
+    # Tags in Italian
+    "etichette": TAGS_COLUMN,
+    "categorie": TAGS_COLUMN,
+
+    # Other fields in Italian
+    "commento": "comment",
+    "data di nascita": "birthdate",
+    "data nascita": "birthdate",
+    "nascita": "birthdate"
 }
 NON_NFKD_MAP = {
     u'\u0181': u'B', u'\u1d81': u'd', u'\u1d85': u'l', u'\u1d89': u'r', u'\u028b': u'v', u'\u1d8d': u'x', 
