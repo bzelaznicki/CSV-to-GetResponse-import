@@ -1,3 +1,5 @@
+TAGS_COLUMN = "tags"
+
 FIELD_MAPPINGS = {
     "email": "email",
     "e-mail": "email",
@@ -75,6 +77,14 @@ FIELD_MAPPINGS = {
     "entreprise": "company",
     "empresa": "company",
     "unternehmen": "company",
+
+    #Tags
+    "tags": TAGS_COLUMN,
+    "tag": TAGS_COLUMN,
+    "tagi": TAGS_COLUMN,  # Polish
+    "etykiety": TAGS_COLUMN,  # Polish
+    "labels": TAGS_COLUMN,
+    "categories": TAGS_COLUMN,
 
     # Other fields
     "komentarz": "comment",

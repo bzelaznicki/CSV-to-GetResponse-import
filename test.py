@@ -3,99 +3,232 @@ from converter import *
 import unittest
 
 class TestConvertHeader(unittest.TestCase):
+    def test_minimal_headers(self):
+        # Test with just a few essential columns
+        csv_data = '''email,first_name,tags
+    test@example.com,John,"tag1, tag2"'''
+        
+        result = process_csv_data(csv_data)
+        expected = [{
+            "email": "test@example.com",
+            "first_name": "John",
+            "tags": ["tag1", "tag2"]
+        }]
+        self.assertEqual(result, expected)
 
-    def test_remove_accents(self):
-        self.assertEqual(convert_header('Café'), 'cafe')
-        self.assertEqual(convert_header('naïve'), 'naive')
-        self.assertEqual(convert_header('résumé'), 'resume')
+    def test_all_standard_headers(self):
+        # Test with all common fields
+        csv_data = '''email,tags,first_name,last_name,address,city,state,postal_code
+    test@example.com,"tag1,tag2",John,Doe,123 Main St,Boston,MA,12345'''
+        
+        result = process_csv_data(csv_data)
+        expected = [{
+            "email": "test@example.com",
+            "tags": ["tag1", "tag2"],
+            "first_name": "John",
+            "last_name": "Doe",
+            "address": "123 Main St",
+            "city": "Boston",
+            "state": "MA",
+            "postal_code": "12345"
+        }]
+        self.assertEqual(result, expected)
 
-    def test_lowercase_conversion(self):
-        self.assertEqual(convert_header('HEADER'), 'header')
-        self.assertEqual(convert_header('HeAdEr'), 'header')
+    def test_extra_headers(self):
+        # Test with extra columns that aren't in our mapping
+        csv_data = '''email,custom_field,first_name,tags,unknown_column
+    test@example.com,custom_value,John,"tag1,tag2",ignore_this'''
+        
+        result = process_csv_data(csv_data)
+        expected = [{
+            "email": "test@example.com",
+            "first_name": "John",
+            "tags": ["tag1", "tag2"],
+            "custom_field": "custom_value",
+            "unknown_column": "ignore_this"
+        }]
+        self.assertEqual(result, expected)
+    def test_empty_tags(self):
+        csv_data = '''email,tags
+    test@example.com,""'''
+        result = process_csv_data(csv_data)
+        expected = [{"email": "test@example.com", "tags": []}]
+        self.assertEqual(result, expected)
 
-    def test_remove_non_alphanumeric(self):
-        self.assertEqual(convert_header('header!@#'), 'header')
-        self.assertEqual(convert_header('header 123'), 'header_123')
+    def test_mixed_whitespace_tags(self):
+        csv_data = '''email,tags
+    test@example.com,"  tag1,    tag2   ,tag3  "'''
+        result = process_csv_data(csv_data)
+        expected = [{"email": "test@example.com", "tags": ["tag1", "tag2", "tag3"]}]
+        self.assertEqual(result, expected)
 
-    def test_field_mappings(self):
-        self.assertEqual(convert_header('Telefon komórkowy'), 'mobile_phone')  # Assuming FIELD_MAPPINGS = {'old_field_name': 'new_field_name'}
-
-    def test_replace_spaces_with_underscores(self):
-        self.assertEqual(convert_header('header with spaces'), 'header_with_spaces')
-
-    def test_multiple_spaces_to_single_underscore(self):
-        self.assertEqual(convert_header('header    with    spaces'), 'header_with_spaces')
-    def test_empty_string(self):
-        self.assertEqual(convert_header(''), '')
-
-    def test_mixed_cases(self):
-        self.assertEqual(convert_header('E-mail Address'), 'email')
-        self.assertEqual(convert_header('ZIP Code'), 'postal_code')
-
-    def test_leading_trailing_spaces(self):
-        self.assertEqual(convert_header('  header  '), 'header')
-
-    def test_special_characters_with_numbers(self):
-        self.assertEqual(convert_header('Phone#1'), 'phone_1')
-        self.assertEqual(convert_header('Contact-2'), 'contact_2')
+    def test_duplicate_headers(self):
+        # Test how system handles duplicate headers
+        csv_data = '''email,tags,email
+    test@example.com,"tag1,tag2",another@example.com'''
+        with self.assertRaises(ValueError):
+            process_csv_data(csv_data)
 
     def test_empty_csv(self):
-        with self.assertRaises(ValueError) as context:
-            get_and_convert_headers("")
-        self.assertEqual(str(context.exception), 'CSV appears to be empty')
+        csv_data = ""
+        with self.assertRaises(ValueError):
+            process_csv_data(csv_data)        
+    def test_headers_only(self):
+        csv_data = '''email,tags'''
+        result = process_csv_data(csv_data)
+        self.assertEqual(result, [])  # Should return empty list when no data rows
 
-    def test_whitespace_only_headers(self):
-        with self.assertRaises(ValueError) as context:
-            get_and_convert_headers("   ,  ,  ")
-        self.assertEqual(str(context.exception), 'All headers were invalid or empty after conversion')
-
-    def test_special_chars_only(self):
-        with self.assertRaises(ValueError) as context:
-            get_and_convert_headers("!@#,$%^,&*()")
-        self.assertEqual(str(context.exception), 'All headers were invalid or empty after conversion')
-
-    def test_valid_and_invalid_mixed(self):
-        result = get_and_convert_headers("valid,   ,!@#,name,###")
-        self.assertEqual(result, ['valid', 'name'])
-    def test_quoted_headers(self):
-        csv_data = '"First Name","Last,Name","Email Address"'
-        result = get_and_convert_headers(csv_data)
-        self.assertEqual(result, ['first_name', 'last_name', 'email'])  # email_address -> email
-
-    def test_mixed_quoted_unquoted(self):
-        csv_data = 'ID,"Full Name",email,"Phone,Number"'
-        result = get_and_convert_headers(csv_data)
-        self.assertEqual(result, ['id', 'full_name', 'email', 'phone_number'])
-
-    def test_field_mappings(self):
-        csv_data = '"Email Address","Phone Number","First Name"'
-        result = get_and_convert_headers(csv_data)
-        self.assertEqual(result, ['email', 'phone', 'first_name'])  # Testing multiple mappings
-    def test_polish_headers(self):
-        csv_data = '"imie","nazwisko","telefon komorkowy","kod pocztowy"'
-        result = get_and_convert_headers(csv_data)
-        self.assertEqual(result, ['first_name', 'last_name', 'mobile_phone', 'postal_code'])    
-
-    def test_email_variations(self):
-        csv_data = '"e-mail","email address","e-mail_address","adres email"'
-        result = get_and_convert_headers(csv_data)
-        self.assertEqual(result, ['email', 'email', 'email', 'email'])   
-    
-    def test_accented_headers(self):
-        csv_data = '"Téléphone","E-mail","Prénom","Straße"'
-        result = get_and_convert_headers(csv_data)
-        # Update expectation to match our standardized mappings
-        self.assertEqual(result, ['phone', 'email', 'first_name', 'street'])
-
-    def test_special_chars(self):
-        csv_data = '"Phone #","E_mail","Street address","ZIP"'
-        result = get_and_convert_headers(csv_data)
-        # Update expectation to match our standardized mappings
-        self.assertEqual(result, ['phone', 'email', 'street', 'postal_code'])
-
-    def test_mixed_accents_and_mappings(self):
-        csv_data = '"téléphone komórkowy","adres émail","código postal"'
-        result = get_and_convert_headers(csv_data)
-        self.assertEqual(result, ['telephone_komorkowy', 'email', 'postal_code'])
+    def test_malformed_csv(self):
+        csv_data = '''email,tags
+    test@example.com,"unclosed quote string",tag1,extra_column
+    next@example.com,tag2'''
+        with self.assertRaises(ValueError):  # Changed to ValueError
+            process_csv_data(csv_data)
+    def test_various_email_formats(self):
+        csv_data = '''email,tags
+    not_an_email,tag1
+    test@example.com,tag2
+    missing@.com,tag3
+    @incomplete.com,tag4'''
+        result = process_csv_data(csv_data)
+        expected = [
+            {"email": "not_an_email", "tags": ["tag1"]},
+            {"email": "test@example.com", "tags": ["tag2"]},
+            {"email": "missing@.com", "tags": ["tag3"]},
+            {"email": "@incomplete.com", "tags": ["tag4"]}
+        ]
+        self.assertEqual(result, expected)    
+    def test_special_chars_in_tags(self):
+        csv_data = '''email,tags
+    test@example.com,"tag#1,tag$2,tag@3,tag&4,tag-5"'''
+        result = process_csv_data(csv_data)
+        expected = [
+            {"email": "test@example.com", "tags": ["tag#1", "tag$2", "tag@3", "tag&4", "tag-5"]}
+        ]
+        self.assertEqual(result, expected)         
+    def test_line_endings(self):
+        # Unix style (\n)
+        unix_csv = '''email,tags\ntest@example.com,"tag1,tag2"\nother@example.com,"tag3,tag4"'''
+        
+        # Windows style (\r\n)
+        windows_csv = '''email,tags\r\ntest@example.com,"tag1,tag2"\r\nother@example.com,"tag3,tag4"'''
+        
+        # Old Mac style (\r)
+        mac_csv = '''email,tags\rtest@example.com,"tag1,tag2"\rother@example.com,"tag3,tag4"'''
+        
+        expected = [
+            {"email": "test@example.com", "tags": ["tag1", "tag2"]},
+            {"email": "other@example.com", "tags": ["tag3", "tag4"]}
+        ]
+        
+        # All three should produce the same output
+        self.assertEqual(process_csv_data(unix_csv), expected)
+        self.assertEqual(process_csv_data(windows_csv), expected)
+        self.assertEqual(process_csv_data(mac_csv), expected)
+    def test_unicode_chars(self):
+        csv_data = '''email,tags
+    üser@example.com,"tág1,标签2,タグ3"'''
+        expected = [
+            {"email": "üser@example.com", "tags": ["tág1", "标签2", "タグ3"]}
+        ]
+        self.assertEqual(process_csv_data(csv_data), expected)           
+    def test_large_file(self):
+        large_csv = "email,tags\n" + "\n".join([
+            f'test{i}@example.com,"tag1,tag2,tag3"'
+            for i in range(10000)
+        ])
+        result = process_csv_data(large_csv)
+        self.assertEqual(len(result), 10000)
+        # Check first and last entries
+        self.assertEqual(result[0], {"email": "test0@example.com", "tags": ["tag1", "tag2", "tag3"]})
+        self.assertEqual(result[-1], {"email": "test9999@example.com", "tags": ["tag1", "tag2", "tag3"]})  
+    def test_different_encodings(self):
+        # UTF-8 with BOM, UTF-16, etc
+        csv_data = '''email,tags
+    José@example.com,"tág1,漢字,🐻"
+    भारत@example.com,"тег1,العلامة,테스트"'''
+        
+        # Test with different encodings
+        encodings = ['utf-8', 'utf-8-sig', 'utf-16']
+        for encoding in encodings:
+            # Encode the data in the specified encoding
+            encoded_data = csv_data.encode(encoding)
+            # Decode it back and process
+            decoded_data = encoded_data.decode(encoding)
+            result = process_csv_data(decoded_data)
+            
+            expected = [
+                {"email": "José@example.com", "tags": ["tág1", "漢字", "🐻"]},
+                {"email": "भारत@example.com", "tags": ["тег1", "العلامة", "테스트"]}
+            ]
+            self.assertEqual(result, expected)   
+    def test_tag_conversion(self):
+        test_cases = [
+            ("Hello World!", "hello_world"),
+            ("TaG1!!!", "tag1"),
+            ("résumé", "resume"),
+            ("  spaces  ", "spaces"),
+            ("multiple___spaces", "multiple_spaces"),
+            ("!@#$%^", ""),  # How should empty results be handled?
+            ("漢字", "")
+        ]
+        
+        for input_tag, expected in test_cases:
+            result = convert_tag(input_tag)
+            self.assertEqual(result, expected)   
+    def test_tag_edge_cases(self):
+        test_cases = [
+            # Empty inputs
+            ("", ""),
+            (" ", ""),
+            
+            # Just special characters
+            ("@#$", ""),
+            ("___", ""),
+            
+            # Numbers only
+            ("123", "123"),
+            
+            # Mixed case with multiple spaces/specials
+            ("Hello   World!!!___", "hello_world"),
+            
+            # Unicode spaces and separators
+            ("\u2002\u2003Hello\u2002World\u2002", "hello_world"),
+            
+            # Emojis and symbols
+            ("👋 Hello 🌍", "hello"),
+            
+            # Non-breaking spaces
+            ("Hello\u00A0World", "hello_world"),
+            
+            # Control characters
+            ("Hello\n\tWorld", "hello_world")
+        ]
+        
+        for input_tag, expected in test_cases:
+            result = convert_tag(input_tag)
+            self.assertEqual(result, expected)  
+    def test_tag_length(self):
+        test_cases = [
+            # Exactly 64 chars
+            ("a" * 64, "a" * 64),
+            
+            # More than 64 chars
+            ("a" * 100, "a" * 64),
+            
+            # Long string with spaces and special chars
+            # "hello_" is 6 chars, so we can fit 10 complete "hello_" (60 chars)
+            # plus "hell" (4 chars) to make 64 total
+            ("Hello " * 20, ("hello_" * 10) + "hell"),
+            
+            # Long unicode that converts to shorter ASCII
+            ("é" * 100, "e" * 64)
+        ]
+        
+        for input_tag, expected in test_cases:
+            result = convert_tag(input_tag)
+            self.assertEqual(result, expected)
+            self.assertLessEqual(len(result), 64)
+                                 
 if __name__ == '__main__':
     unittest.main()
