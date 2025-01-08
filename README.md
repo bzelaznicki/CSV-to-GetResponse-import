@@ -30,8 +30,4 @@ Example:
 python main.py /path/to/your/file.csv
 ```
 
-This will process the CSV file and import the data into GetResponse.
-
-## License
-
-This project is licensed under the MIT License.
+This will process the CSV file and prepare the file for import to GetResponse.
