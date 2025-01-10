@@ -119,30 +119,36 @@ def get_unique_tags(row_tags):
 def convert_csv(input_data):
     processed_csv = process_csv_data(input_data)
     
-    # Get all headers except 'tags'
-    base_headers = [h for h in processed_csv[0].keys() if h != 'tags']
+    # Get all headers
+    headers = list(processed_csv[0].keys())
     
-    unique_tags = get_unique_tags(row['tags'] for row in processed_csv)
-    tag_headers = [f'tag:{tag}' for tag in unique_tags]
+    # Check if tags column exists
+    has_tags = TAGS_COLUMN in headers
     
-    # Combine headers (without 'tags')
-    headers = base_headers + tag_headers
-    
-    # Generate rows
-    rows = []
-    for row in processed_csv:
-        # Start with all base columns except tags
-        new_row = [row[header] for header in base_headers]
+    if has_tags:
+        # Get all headers except 'tags'
+        base_headers = [h for h in headers if h != TAGS_COLUMN]
+        unique_tags = get_unique_tags(row[TAGS_COLUMN] for row in processed_csv)
+        tag_headers = [f'tag:{tag}' for tag in unique_tags]
         
-        # Add tag columns (1's and 0's)
-        row_tags = [convert_tag(tag) for tag in row['tags']]
+        # Combine headers
+        final_headers = base_headers + tag_headers
         
-        for tag in unique_tags:
-            new_row.append('1' if tag in row_tags else '0')
-        
-        rows.append(new_row)
+        # Generate rows with tags
+        rows = []
+        for row in processed_csv:
+            new_row = [row[header] for header in base_headers]
+            row_tags = [convert_tag(tag) for tag in row[TAGS_COLUMN]]
+            
+            for tag in unique_tags:
+                new_row.append('1' if tag in row_tags else '0')
+            rows.append(new_row)
+    else:
+        # No tags processing needed
+        final_headers = headers
+        rows = [[row[header] for header in headers] for row in processed_csv]
     
-    return headers, rows    
+    return final_headers, rows  
 
 def get_output_filename(input_filename):
     # Split the filename and extension
