@@ -11,6 +11,7 @@ FIELD_MAPPINGS = {
     "e-mail_address": "email",
     "e_mail_address": "email",
     "adres email": "email",  # Polish
+    "Adres e-mail": "email",  # Polish
     "correo electronico": "email",  # Spanish
     "correo": "email",  # Spanish
     "indirizzo email": "email",  # Italian
