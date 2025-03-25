@@ -11,11 +11,6 @@ Requires Python 3.
     ```sh
     cd csv_to_getresponse_import
     ```
-3. Install the required dependencies:
-    ```sh
-    pip install -r requirements.txt
-    ```
-
 ## Usage
 
 To run the program, use the following command:
