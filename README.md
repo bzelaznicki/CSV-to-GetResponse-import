@@ -5,7 +5,7 @@ Requires Python 3.
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/bzelaznicki/csv_to_getresponse_import.git
+    git clone https://github.com/bzelaznicki/CSV-to-GetResponse-import.git
     ```
 2. Navigate to the project directory:
     ```sh
