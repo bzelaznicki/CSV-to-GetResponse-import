@@ -9,7 +9,7 @@ Requires Python 3.
     ```
 2. Navigate to the project directory:
     ```sh
-    cd CSV-to-GetResponse-inport
+    cd CSV-to-GetResponse-import
     ```
 ## Usage
 
