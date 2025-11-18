@@ -133,6 +133,13 @@ class TestConvertHeader(unittest.TestCase):
             {"email": "üser@example.com", "tags": ["tág1", "标签2", "タグ3"]}
         ]
         self.assertEqual(process_csv_data(csv_data), expected)           
+    def test_semicolon_delimiter(self):
+        csv_data = '''email;first_name;tags
+    test@example.com;John;"tag1, tag2"'''
+        expected = [
+            {"email": "test@example.com", "first_name": "John", "tags": ["tag1", "tag2"]}
+        ]
+        self.assertEqual(process_csv_data(csv_data), expected)
     def test_large_file(self):
         large_csv = "email,tags\n" + "\n".join([
             f'test{i}@example.com,"tag1,tag2,tag3"'

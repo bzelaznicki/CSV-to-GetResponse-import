@@ -87,6 +87,21 @@ def process_tags(tag_string):
     
     return tags
 
+def detect_delimiter(csv_data):
+    stripped_data = csv_data.strip()
+    if not stripped_data:
+        return ','
+    
+    sample = '\n'.join(stripped_data.splitlines()[:10])
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=[',', ';'])
+        return dialect.delimiter
+    except csv.Error:
+        first_line = stripped_data.splitlines()[0]
+        if first_line.count(';') > first_line.count(','):
+            return ';'
+        return ','
+
 def process_csv_data(csv_data):
     if not csv_data.strip():
         raise ValueError('Empty CSV data')
@@ -94,7 +109,9 @@ def process_csv_data(csv_data):
     # Normalize line endings to \n
     csv_data = csv_data.replace('\r\n', '\n').replace('\r', '\n')
     
-    csv_reader = csv.reader(StringIO(csv_data), quotechar='"', delimiter=',')
+    delimiter = detect_delimiter(csv_data)
+    
+    csv_reader = csv.reader(StringIO(csv_data), quotechar='"', delimiter=delimiter)
     headers = get_and_convert_headers(next(csv_reader))
     expected_columns = len(headers)
 
