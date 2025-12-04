@@ -26,7 +26,7 @@ This project provides a tool to process CSV files and prepare them for import in
 
 To run the program, use the following command:
 ```sh
-uv run python main.py <path_to_csv_file>
+uv run main.py <path_to_csv_file>
 ```
 
 Replace `<path_to_csv_file>` with the path to your CSV file.
@@ -34,7 +34,7 @@ Replace `<path_to_csv_file>` with the path to your CSV file.
 ### Example
 
 ```sh
-uv run python main.py /path/to/your/file.csv
+uv run main.py /path/to/your/file.csv
 ```
 
 This will process the CSV file and prepare it for import to GetResponse. The output will be saved in a format compatible with GetResponse's import requirements.
@@ -49,7 +49,7 @@ This will process the CSV file and prepare it for import to GetResponse. The out
 
 To run the tests for this project, use the following command:
 ```sh
-uv run python test.py
+uv run test.py
 ```
 
 This will execute the test suite to ensure the program is functioning as expected.
