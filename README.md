@@ -4,7 +4,8 @@ This project provides a tool to process CSV files and prepare them for import in
 
 ## Requirements
 
-- Python 3.6 or higher
+- Python 3.13 or higher
+- [uv](https://github.com/astral-sh/uv) for dependency management
 
 ## Installation
 
@@ -16,21 +17,16 @@ This project provides a tool to process CSV files and prepare them for import in
     ```sh
     cd CSV-to-GetResponse-import
     ```
-3. (Optional) Create and activate a virtual environment:
+3. Create the virtual environment and install dependencies with uv:
     ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
-4. Install any required dependencies (if applicable):
-    ```sh
-    pip install -r requirements.txt
+    uv sync
     ```
 
 ## Usage
 
 To run the program, use the following command:
 ```sh
-python main.py <path_to_csv_file>
+uv run python main.py <path_to_csv_file>
 ```
 
 Replace `<path_to_csv_file>` with the path to your CSV file.
@@ -38,7 +34,7 @@ Replace `<path_to_csv_file>` with the path to your CSV file.
 ### Example
 
 ```sh
-python main.py /path/to/your/file.csv
+uv run python main.py /path/to/your/file.csv
 ```
 
 This will process the CSV file and prepare it for import to GetResponse. The output will be saved in a format compatible with GetResponse's import requirements.
@@ -53,7 +49,7 @@ This will process the CSV file and prepare it for import to GetResponse. The out
 
 To run the tests for this project, use the following command:
 ```sh
-python test.py
+uv run python test.py
 ```
 
 This will execute the test suite to ensure the program is functioning as expected.
